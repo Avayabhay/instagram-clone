@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import Header from '../components/Header'
+import Feed from '../components/Feed'
 
 export default function Home() {
   return (
-    <div>
+    <div className="h-screen overflow-y-auto bg-gray-50">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,6 +16,7 @@ export default function Home() {
       <Header />
 
       {/* feed */}
+      <Feed />
 
       {/* Modal */}
     </div>

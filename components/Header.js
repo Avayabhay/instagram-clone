@@ -58,7 +58,7 @@ function Header() {
         <div className="flex items-center justify-end space-x-4 ">
           <HomeIcon className="navBtn" />
           <MenuIcon className="h-8 w-10 cursor-pointer md:hidden" />
-          <div className="relative">
+          <div className="navBtn relative">
             <PaperAirplaneIcon className="navBtn rotate-45" />
             <div className="absolute -top-2 -right-2 flex h-5 w-5 animate-pulse items-center justify-center rounded-full bg-red-500 text-white">
               4
