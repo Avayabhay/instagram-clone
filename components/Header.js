@@ -14,9 +14,9 @@ import { HomeIcon } from '@heroicons/react/solid'
 function Header() {
   return (
     <div className="sticky top-0 z-50 border-b bg-white shadow-sm">
-      <div className="mx-5 flex max-w-6xl items-center justify-between lg:mx-auto">
+      <div className="mx-5 flex max-w-6xl items-center justify-between pr-2 pl-2 lg:mx-auto">
         {/* left */}
-        <div className="relative hidden h-24 w-24 cursor-pointer lg:inline-grid">
+        <div className="relative hidden h-16 w-24 cursor-pointer lg:inline-grid">
           {/* InstagramIcon */}
           <Image
             // src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
@@ -41,15 +41,15 @@ function Header() {
               className="insert-y-0 pointer-events-none absolute 
               mt-2 flex items-center pl-3"
             >
-              <SearchIcon className="h-5 w-5 text-gray-500" />
+              <SearchIcon className="h-5 w-5 text-gray-400" />
             </div>
             <input
-              className="block-w-full rounded-md border-gray-300 bg-gray-50
-              pl-10 focus:ring-black sm:text-sm"
+              className="block-w-full rounded-md border-gray-100 bg-gray-100 pl-10
+               focus:ring-black sm:text-sm "
               type="text"
               name="search"
-              id=""
-              placeholder="search"
+              id="search"
+              placeholder="Search"
             />
           </div>
         </div>
