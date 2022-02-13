@@ -70,7 +70,7 @@ function Header() {
           <img
             src="https://scontent.fccu3-1.fna.fbcdn.net/v/t31.18172-8/18922591_1442687345782619_6455725593091166328_o.jpg?_nc_cat=111&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=L66Yd_6OJRsAX_Hzf_u&_nc_ht=scontent.fccu3-1.fna&oh=00_AT_e5BSOwyC7tXZwNKhYmUHWBPlQDo1UMp9qumgTCOe6uA&oe=6223937D"
             alt="pro pic"
-            className="h=10 w-10 cursor-pointer rounded-full"
+            className="h=10 hidden w-10 cursor-pointer rounded-full md:inline-grid"
           />
         </div>
         {/* menu */}
