@@ -11,6 +11,7 @@ import {
 } from '@heroicons/react/outline'
 import { HomeIcon } from '@heroicons/react/solid'
 import { signIn, signOut, useSession } from 'next-auth/react'
+import Router from 'next/router'
 
 function Header() {
   const { data: session } = useSession()
@@ -23,6 +24,7 @@ function Header() {
         <div className="relative hidden h-16 w-24 cursor-pointer lg:inline-grid">
           {/* InstagramIcon */}
           <Image
+            onClick={() => Router.push('/')}
             // src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
             src="https://links.papareact.com/ocw"
             layout="fill"
@@ -32,6 +34,7 @@ function Header() {
         <div className="relative inline-grid  h-10 w-10 flex-shrink-0 cursor-pointer lg:hidden">
           {/* InstagramIcon */}
           <Image
+            onClick={() => Router.push('/')}
             // src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
             src="https://links.papareact.com/jjm"
             layout="fill"
@@ -60,7 +63,7 @@ function Header() {
 
         {/* right */}
         <div className="flex items-center justify-end space-x-4 ">
-          <HomeIcon className="navBtn" />
+          <HomeIcon onClick={() => Router.push('/')} className="navBtn" />
           <MenuIcon className="h-8 w-10 cursor-pointer md:hidden" />
 
           {session ? (

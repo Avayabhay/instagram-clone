@@ -20,10 +20,6 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     // Passwordless / email sign in
-    // EmailProvider({
-    //   server: process.env.MAIL_SERVER,
-    //   from: 'NextAuth.js <no-reply@example.com>',
-    // }),
   ],
 
   //   theme : {
@@ -34,5 +30,16 @@ export default NextAuth({
 
   pages: {
     signIn: '/auth/signin',
+  },
+  callbacks: {
+    async session({ session, token, user }) {
+      session.user.username = session.user.name
+        .split(' ')
+        .join('')
+        .toLocaleLowerCase()
+
+      session.user.uid = token.uid
+      return session
+    },
   },
 })
