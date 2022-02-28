@@ -1,10 +1,23 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useRef, useState } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { modalState } from '../atoms/modalAtom'
 import { Transition, Dialog } from '@headlessui/react'
+import { CameraIcon } from '@heroicons/react/outline'
 
 export default function Modal() {
   const [open, setOpen] = useRecoilState(modalState)
+  const filePickerRef = useRef(null)
+  const [selectedFile, setSelectedFile] = useState(null)
+  const captionRef = useRef(null)
+
+  const addImageToPost = (e) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result)
+    }
+  }
 
   return (
     <Transition show={open} as={Fragment}>
@@ -43,6 +56,56 @@ export default function Modal() {
               className="inline-block transform overflow-hidden rounded-lg bg-white px-4 pb-5 pt-4 
             text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle"
             >
+              <div>
+                {selectedFile ? (
+                  <img
+                    className="w-full cursor-pointer  object-contain"
+                    src={selectedFile}
+                    onClick={() => setSelectedFile(null)}
+                    alt=""
+                  />
+                ) : (
+                  <div
+                    className="mx-auto flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-100"
+                    //Simulating the click on hidden input field when click on Camera Icon
+                    onClick={() => filePickerRef.current.click()}
+                  >
+                    <CameraIcon
+                      className="h-6 w-6 text-red-600"
+                      aria-hidden="true"
+                    />
+                    {/* {console.log(selectedFile)} */}
+                  </div>
+                )}
+
+                <div className="mt-3 text-center sm:mt-5 ">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Upload a Photo
+                  </Dialog.Title>
+
+                  <div>
+                    <input
+                      type="file"
+                      // Using UseRef to reference this input
+                      ref={filePickerRef}
+                      hidden
+                      onChange={addImageToPost}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      ref={captionRef}
+                      type="text"
+                      className="w-full border-none text-center focus:ring-0"
+                      placeholder="please enter a caption..."
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <button
                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600
