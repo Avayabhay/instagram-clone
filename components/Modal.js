@@ -3,11 +3,23 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 import { modalState } from '../atoms/modalAtom'
 import { Transition, Dialog } from '@headlessui/react'
 import { CameraIcon } from '@heroicons/react/outline'
+import { db, storage } from '../firebase'
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore'
+import { useSession } from 'next-auth/react'
+import { getDownloadURL, ref, uploadString } from 'firebase/storage'
 
 export default function Modal() {
+  const { data: session } = useSession()
   const [open, setOpen] = useRecoilState(modalState)
   const filePickerRef = useRef(null)
   const [selectedFile, setSelectedFile] = useState(null)
+  const [loading, setLoading] = useState(false)
   const captionRef = useRef(null)
 
   const addImageToPost = (e) => {
@@ -17,6 +29,45 @@ export default function Modal() {
     reader.onload = (readerEvent) => {
       setSelectedFile(readerEvent.target.result)
     }
+  }
+
+  const uploadPost = async () => {
+    if (loading) return
+
+    setLoading(true)
+
+    // 1. Create a Post & add to FireStore 'posts' Collection
+    // 2. Get the post ID for the newly created Post
+    // 3. Upload the Image to fireBase storage with post ID
+    // 4. Get a download URL from FireBase Storage and update to the original post with image
+
+    // step 1:
+    const docRef = await addDoc(collection(db, 'posts'), {
+      username: session.user.username,
+      caption: captionRef.current.value,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+    })
+
+    //step 2:
+    console.log('new Doc adeed with ID : ' + docRef.id)
+
+    //step 3:
+    const imageRef = ref(storage, `posts/${docRef.id}/image`)
+
+    await uploadString(imageRef, selectedFile, 'data_url').then(
+      async (snapshot) => {
+        //step 4:
+        const downloadURL = await getDownloadURL(imageRef)
+        await updateDoc(doc(db, 'posts', docRef.id), {
+          image: downloadURL,
+        })
+      }
+    )
+
+    setOpen(false)
+    setLoading(false)
+    setSelectedFile(null)
   }
 
   return (
@@ -108,11 +159,12 @@ export default function Modal() {
 
               <div>
                 <button
+                  onClick={uploadPost}
                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600
                  px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2
                  focus:ring-red-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 hover:disabled:bg-gray-300 sm:text-sm "
                 >
-                  Upload Post
+                  {loading ? 'Uploading...' : 'Upload Post'}
                 </button>
               </div>
             </div>
