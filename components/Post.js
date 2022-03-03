@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   DotsHorizontalIcon,
   HeartIcon,
@@ -7,8 +7,13 @@ import {
   BookmarkIcon,
   EmojiHappyIcon,
 } from '@heroicons/react/outline'
+import { useSession } from 'next-auth/react'
 
 function Post({ id, username, userImg, img, caption }) {
+  const { data: session } = useSession()
+  const [comment, setComment] = useState('')
+  const [comments, setComments] = useState([])
+
   return (
     <div className="my-7 rounded-sm border bg-white">
       {/* header */}
@@ -26,14 +31,16 @@ function Post({ id, username, userImg, img, caption }) {
       <img src={img} className="w-full object-cover" alt="" />
 
       {/* Buttons */}
-      <div className="flex justify-between px-4 pt-4">
-        <div className="flex space-x-4">
-          <HeartIcon className="btn" />
-          <ChatIcon className="btn" />
-          <PaperAirplaneIcon className="btn" />
+      {session && (
+        <div className="flex justify-between px-4 pt-4">
+          <div className="flex space-x-4">
+            <HeartIcon className="btn" />
+            <ChatIcon className="btn" />
+            <PaperAirplaneIcon className="btn" />
+          </div>
+          <BookmarkIcon className="btn" />
         </div>
-        <BookmarkIcon className="btn" />
-      </div>
+      )}
 
       {/* caption */}
       <p className="truncate p-5">
@@ -44,19 +51,28 @@ function Post({ id, username, userImg, img, caption }) {
       {/* comments */}
 
       {/* Input Box */}
-      <form action="" className="flex items-center p-4">
-        <EmojiHappyIcon className="h-7" />
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Add a comment..."
-          className="flex-1 border-none  outline-none focus:ring-0"
-        />
-        <button className="font-semibold text-blue-400" type="submit">
-          Post
-        </button>
-      </form>
+      {session && (
+        <form action="" className="flex items-center p-4">
+          <EmojiHappyIcon className="h-7" />
+          <input
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            type="text"
+            name=""
+            id=""
+            placeholder="Add a comment..."
+            className="flex-1 border-none  outline-none focus:ring-0"
+          />
+          <button
+            className="font-semibold text-blue-400 disabled:text-blue-200"
+            type="submit"
+            onClick={sendComment}
+            disabled={!comment.trim()}
+          >
+            Post
+          </button>
+        </form>
+      )}
     </div>
   )
 }
