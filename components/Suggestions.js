@@ -9,7 +9,7 @@ function Suggestions() {
       ...faker.helpers.contextualCard(),
       id: i,
     }))
-    console.log(people)
+    // console.log(people)
     setPeople(people)
   }, [])
   return (

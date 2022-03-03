@@ -23,7 +23,7 @@ function Post({ id, username, userImg, img, caption }) {
       </div>
 
       {/* Img */}
-      <img src={userImg} className="w-full object-cover" alt="" />
+      <img src={img} className="w-full object-cover" alt="" />
 
       {/* Buttons */}
       <div className="flex justify-between px-4 pt-4">

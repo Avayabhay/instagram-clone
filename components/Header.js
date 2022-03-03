@@ -20,7 +20,7 @@ function Header() {
   const [open, setOpen] = useRecoilState(modalState)
   //for Read-Only values in recoil
   //const [open] = useRecoilValue(modalState);
-  console.log(session)
+  // console.log(session)
 
   return (
     <div className="sticky top-0 z-50 border-b bg-white shadow-sm">
