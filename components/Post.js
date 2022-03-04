@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   DotsHorizontalIcon,
   HeartIcon,
@@ -8,11 +8,46 @@ import {
   EmojiHappyIcon,
 } from '@heroicons/react/outline'
 import { useSession } from 'next-auth/react'
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore'
+import { db, storage } from '../firebase'
 
 function Post({ id, username, userImg, img, caption }) {
   const { data: session } = useSession()
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([])
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, 'posts', id, 'comments'),
+          orderBy('timestamp', 'desc')
+        ),
+        (snapshot) => setComments(snapshot.docs)
+      ),
+    [db]
+  )
+  console.log(comments)
+
+  const sendComment = async (e) => {
+    e.preventDefault()
+    const commentToSend = comment
+    setComment('')
+
+    await addDoc(collection(db, 'posts', id, 'comments'), {
+      comment: commentToSend,
+      username: session.user.username,
+      userImage: session.user.image,
+      timestamp: serverTimestamp(),
+    })
+  }
 
   return (
     <div className="my-7 rounded-sm border bg-white">

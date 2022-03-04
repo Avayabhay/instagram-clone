@@ -56,7 +56,7 @@ function Posts() {
       ),
     [db]
   )
-  console.log(posts)
+  // console.log(posts)
   // console.log(posts[0].data().image)
   return (
     <div>

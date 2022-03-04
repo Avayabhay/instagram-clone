@@ -50,7 +50,7 @@ export default function Modal() {
     })
 
     //step 2:
-    console.log('new Doc adeed with ID : ' + docRef.id)
+    // console.log('new Doc adeed with ID : ' + docRef.id)
 
     //step 3:
     const imageRef = ref(storage, `posts/${docRef.id}/image`)
