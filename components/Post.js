@@ -7,6 +7,7 @@ import {
   BookmarkIcon,
   EmojiHappyIcon,
 } from '@heroicons/react/outline'
+import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid'
 import { useSession } from 'next-auth/react'
 import {
   addDoc,
@@ -99,7 +100,14 @@ function Post({ id, username, userImg, img, caption }) {
       {session && (
         <div className="flex justify-between px-4 pt-4">
           <div className="flex space-x-4">
-            <HeartIcon onClick={likePost} className="btn" />
+            {hasLiked ? (
+              <HeartIconFilled
+                onClick={likePost}
+                className="btn text-red-500"
+              />
+            ) : (
+              <HeartIcon onClick={likePost} className="btn" />
+            )}
             <ChatIcon className="btn" />
             <PaperAirplaneIcon className="btn" />
           </div>
@@ -108,10 +116,13 @@ function Post({ id, username, userImg, img, caption }) {
       )}
 
       {/* caption */}
-      <p className="truncate p-5">
+      <div className="truncate p-5">
+        {likes.length > 0 && (
+          <p className="mb-1 -mt-1 font-bold">{likes.length} likes</p>
+        )}
         <span className="mr-1 font-bold">{username}</span>
         {caption}
-      </p>
+      </div>
 
       {/* comments */}
       {comments.length > 0 && (
