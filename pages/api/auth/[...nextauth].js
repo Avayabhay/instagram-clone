@@ -38,7 +38,8 @@ export default NextAuth({
         .join('')
         .toLocaleLowerCase()
 
-      session.user.uid = token.uid
+      session.user.uid = token.sub
+      //console.log(token.uid)
       return session
     },
   },
